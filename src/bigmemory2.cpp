@@ -9,7 +9,7 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 bool IsShared(XPtr<BigMatrix> pMat) {
-  return pMat->shared();
+  return pMat->shared(); 
 }
 
 /******************************************************************************/
