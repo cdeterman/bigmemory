@@ -44,6 +44,16 @@ test_that("Filebacked big.matrix (from descfile) has rownames", {
 
 ################################################################################
 
+bim4 <- read.big.matrix(txtfile, sep = ' ', header = TRUE, has.row.names = TRUE, 
+                        type = "double", shared = FALSE)
+
+test_that("Local big.matrix has rownames", {
+  expect_false(is.shared(bim4))
+  expect_equal(rownames(bim4), rownames(iris))
+})
+
+################################################################################
+
 options(opt.save)
 
 ################################################################################
