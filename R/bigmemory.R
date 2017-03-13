@@ -1497,12 +1497,17 @@ setMethod('read.big.matrix', signature(filename='character'),
       colNames <- c(colNames, extraCols)
     }
 
-    bigMat <- big.matrix(nrow=numRows, ncol=createCols, type=type,
-                         dimnames=list(rowNames, colNames), init=NULL, 
-                         separated=separated, backingfile=backingfile,
-                         backingpath=backingpath,
-                         descriptorfile=descriptorfile,
-                         binarydescriptor=binarydescriptor, shared=options()$bigmemory.default.shared)
+    bigMat <- big.matrix(nrow = numRows, 
+                         ncol = createCols, 
+                         type = type,
+                         dimnames = list(rowNames, colNames),  
+                         init = NULL, 
+                         separated = separated,
+                         backingfile = backingfile,
+                         backingpath = backingpath,
+                         descriptorfile = descriptorfile,
+                         binarydescriptor = binarydescriptor, 
+                         shared = shared)
 
     # has.row.names indicates whether or not there are row names;
     # we take ignore.row.names from the user, but pass (essentially)
