@@ -1516,6 +1516,20 @@ setMethod('read.big.matrix', signature(filename='character'),
           as.character(sep), 
           as.logical(has.row.names),
           as.logical(!ignore.row.names))
+    
+    # update descriptor file if applicable
+    if (is.filebacked(bigMat)) {
+      if (is.null(descriptorfile)) 
+        descriptorfile <- paste0(backingfile, ".desc")
+      
+      descriptorfilepath <- file.path(dir.name(bigMat), descriptorfile)
+      
+      if (binarydescriptor) {
+        saveRDS(describe(bigMat), file=descriptorfilepath)
+      } else {
+        dput(describe(bigMat), descriptorfilepath)
+      }
+    }
 
     return(bigMat)
   })

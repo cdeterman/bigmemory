@@ -57,6 +57,7 @@ class BigMatrix : public boost::noncopyable
     Names column_names() {
       Names ret;
       if (!_colNames.empty()) {
+        ret.reserve(_ncol);
         std::copy(_colNames.begin() + _colOffset, 
                   _colNames.begin() + _colOffset + _ncol,
                   std::back_inserter(ret));
@@ -67,7 +68,7 @@ class BigMatrix : public boost::noncopyable
     Names row_names() {
       Names ret;
       if (!_rowNames.empty()) {
-        ret.reserve(nrow());
+        ret.reserve(_nrow);
         std::copy(_rowNames.begin() + _rowOffset, 
                   _rowNames.begin() + _rowOffset + _nrow,
                   std::back_inserter(ret));
