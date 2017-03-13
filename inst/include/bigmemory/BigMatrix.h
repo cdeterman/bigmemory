@@ -181,26 +181,6 @@ class LocalBigMatrix : public BigMatrix
 {
   public:
     LocalBigMatrix() : BigMatrix() {_shared=false;}
-    LocalBigMatrix(XPtr<BigMatrix> pMat, 
-                   index_type rowOffset, 
-                   index_type colOffset, 
-                   index_type numRows,
-                   index_type numCols) : BigMatrix() {
-      _ncol = numCols;
-      _nrow = numRows;
-      _totalRows = pMat->total_rows();
-      _totalCols = pMat->total_columns();
-      _colOffset = colOffset + pMat->col_offset();
-      _rowOffset = rowOffset + pMat->row_offset();
-      _matType = pMat->matrix_type();
-      _pdata = pMat->data_ptr();
-      _shared = false;
-      _sepCols = pMat->separated_columns();
-      _colNames = pMat->column_names();
-      _rowNames = pMat->row_names();
-      _readOnly = pMat->read_only();
-      _allocationSize = pMat->allocation_size();
-    }
     virtual ~LocalBigMatrix() {destroy();};
     virtual bool create( const index_type numRow, const index_type numCol,
       const int matrixType, const bool sepCols);
@@ -277,6 +257,5 @@ class FileBackedBigMatrix : public SharedBigMatrix
   protected:
     std::string _fileName, _filePath;
 };
-
 
 #endif // BIGMATRIX_H

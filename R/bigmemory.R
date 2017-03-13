@@ -1634,33 +1634,7 @@ setGeneric('sub.big.matrix', function(x, firstRow = 1, lastRow = NULL,
 #' @rdname sub.big.matrix
 setMethod('sub.big.matrix', signature(x = 'big.matrix'),
   function(x, firstRow, lastRow, firstCol, lastCol, backingpath) {
-    if (is.shared(x)) {
-      sub.big.matrix(describe(x), firstRow, lastRow, firstCol, lastCol)
-    } else {
-      rowOffset <- firstRow - 1
-      colOffset <- firstCol - 1
-      if (is.null(lastRow)) lastRow <- nrow(x)
-      if (is.null(lastCol)) lastCol <- ncol(x)
-      numRows <- lastRow - rowOffset
-      numCols <- lastCol - colOffset
-      
-      address <- CAttachLocalBigMatrix(x@address, rowOffset, colOffset, 
-                                       numRows, numCols)
-      if (!is.null(address)) {
-        rbm <- new('big.matrix', address = address)
-      } else {
-        stop("Fatal error in attach: big.matrix could not be attached.")
-      }
-      
-      if (colOffset < 0 || rowOffset < 0 || numCols < 1 || numRows < 1 ||
-          colOffset + numCols > ncol(x) || rowOffset + numRows > nrow(x)) {
-        rm(rbm)
-        stop(paste("A sub.big.matrix object could not be created",
-                   "with the specified parameters"))
-      }
-      
-      rbm
-    }
+    sub.big.matrix(describe(x), firstRow, lastRow, firstCol, lastCol)
   })
 
 #' @rdname big.matrix.descriptor-class
@@ -1680,7 +1654,7 @@ setMethod('sub.big.matrix', signature(x = 'big.matrix.descriptor'),
     numRows <- lastRow - rowOffset
     numCols <- lastCol - colOffset
     if (colOffset < 0 || rowOffset < 0 || numCols < 1 || numRows < 1 ||
-        colOffset + numCols > ncol(rbm) || rowOffset + numRows > nrow(rbm)) {
+        (colOffset + numCols) > ncol(rbm) || (rowOffset + numRows) > nrow(rbm)) {
       rm(rbm)
       stop(paste("A sub.big.matrix object could not be created",
                  "with the specified parameters"))
