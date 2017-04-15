@@ -70,7 +70,7 @@ setGeneric('description', function(x) standardGeneric('description'))
 
 #' @rdname attach.big.matrix
 #' @export
-setMethod('describe', signature(x='big.matrix'),
+setMethod('describe', signature(x = 'big.matrix'),
   function(x)
   {
     return(new('big.matrix.descriptor', description=DescribeBigMatrix(x)))
@@ -79,10 +79,16 @@ setMethod('describe', signature(x='big.matrix'),
 
 #' @template core_template
 #' @export
-big.matrix <- function(nrow, ncol, type=options()$bigmemory.default.type,
-                       init=NULL, dimnames=NULL, separated=FALSE,
-                       backingfile=NULL, backingpath=NULL, descriptorfile=NULL,
-                       binarydescriptor=FALSE, shared=options()$bigmemory.default.shared)
+big.matrix <- function(nrow, ncol, 
+                       type = options()$bigmemory.default.type,
+                       init = NULL, 
+                       dimnames = NULL, 
+                       separated = FALSE,
+                       backingfile = NULL,
+                       backingpath = NULL, 
+                       descriptorfile = NULL,
+                       binarydescriptor = FALSE, 
+                       shared = options()$bigmemory.default.shared)
 {
   if (!is.null(backingfile))
   {
