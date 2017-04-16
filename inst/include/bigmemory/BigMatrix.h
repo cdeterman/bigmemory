@@ -14,7 +14,9 @@
 
 #include "bigmemoryDefines.h"
 #include "SharedCounter.h"
+#include <Rcpp.h>
 
+using namespace Rcpp;
 using namespace std;
 
 typedef vector<std::string> Names;
@@ -32,7 +34,7 @@ class BigMatrix : public boost::noncopyable
   // Constructor and Destructor
   public:
     BigMatrix():_ncol(0),_nrow(0), _totalRows(0), _totalCols(0),
-                _colOffset(0), _rowOffset(0),_matType(0), _pdata(NULL),
+                _colOffset(0), _rowOffset(0), _matType(0), _pdata(NULL),
                 _sepCols(false), _readOnly(false), _allocationSize(0){}
     virtual ~BigMatrix(){}
 
@@ -52,27 +54,24 @@ class BigMatrix : public boost::noncopyable
     int matrix_type() const {return _matType;}
     bool shared() const {return _shared;}
     bool separated_columns() const {return _sepCols;}
-    Names column_names() 
-    {
+    Names column_names() {
       Names ret;
-      if (!_colNames.empty())
-      {
-        std::copy( _colNames.begin()+col_offset(), 
-                  _colNames.begin()+col_offset()+ncol(),
-                  std::back_inserter(ret) );
+      if (!_colNames.empty()) {
+        ret.reserve(_ncol);
+        std::copy(_colNames.begin() + _colOffset, 
+                  _colNames.begin() + _colOffset + _ncol,
+                  std::back_inserter(ret));
       }
       return ret;
     }
 
-    Names row_names() 
-    {
+    Names row_names() {
       Names ret;
-      if (!_rowNames.empty())
-      {
-        ret.reserve(nrow());
-        std::copy( _rowNames.begin() + row_offset(), 
-                  _rowNames.begin() + row_offset() + nrow(),
-                  std::back_inserter(ret) );
+      if (!_rowNames.empty()) {
+        ret.reserve(_nrow);
+        std::copy(_rowNames.begin() + _rowOffset, 
+                  _rowNames.begin() + _rowOffset + _nrow,
+                  std::back_inserter(ret));
       }
       return ret;
     }
@@ -168,7 +167,7 @@ class BigMatrix : public boost::noncopyable
     index_type _totalCols;
     index_type _colOffset;
     index_type _rowOffset;
-    index_type _nebytes;
+    // index_type _nebytes;
     int _matType;
     void* _pdata;
     bool _shared;
